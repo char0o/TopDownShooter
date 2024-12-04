@@ -24,13 +24,19 @@ public class GameManager
         _entityManager.AddComponent(e, new Transform(new Vector2f(300, 300), 0.0f, new Vector2f(2, 2)));
         _entityManager.AddComponent(e, new Velocity(new Vector2f(0, 0)));
         _entityManager.AddComponent(e, new PlayerInput());
-        _entityManager.AddComponent(e, new Weapon());
+        Weapon weapon = new Weapon()
+        {
+            DelayBetweenShots = 0.5f
+        };
+        _entityManager.AddComponent(e, weapon);
         _entityManager.AddComponent(e, new WalkingAnimation(new Sprite(_textureManager.GetTexture("hero_animation.png")), 2, 7,0.10f));
         _entityManager.AddComponent(e, new FiringAnimation(new Sprite(_textureManager.GetTexture("firing_animation.png")), 0, 3,0.10f));
+        _entityManager.AddComponent(e, new BoundingBox());
         
         int ee = _entityManager.CreateEntity();
         _entityManager.AddComponent(ee, new Rendering(new Sprite(_textureManager.GetTexture("Hero_Flamethrower.png"))));
-        _entityManager.AddComponent(ee, new Transform(new Vector2f(15, 15), 0.0f, new Vector2f(1, 1)));
+        _entityManager.AddComponent(ee, new Transform(new Vector2f(15, 15), 0.0f, new Vector2f(2, 2)));
+        _entityManager.AddComponent(ee, new BoundingBox());
         
         int camera = _entityManager.CreateEntity();
         _entityManager.AddComponent(camera, new Camera());

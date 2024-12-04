@@ -2,6 +2,7 @@ namespace TopDownShooter.Components;
 
 public class Weapon
 {
-    public bool IsFiring { get; set; }
-    
+    public bool IsFiring { get; set; } = false;
+    public float DelayBetweenShots { get; set; }
+    public float TimeAccumulated { get; set; }
 }

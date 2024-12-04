@@ -7,11 +7,11 @@ public class FiringAnimation
     public Sprite Sprite { get; set; }
     public int MaxFrames { get; set; }
     public float TimeBetweenFrames { get; set; }
-    public int CurrentFrame { get; private set; }
-    public float TimeAccumulator { get; private set; }
-    public int StartingFrame { get; private set; }
-    private readonly int _frameWidth;
-    private readonly Random _random;
+    public bool IsPlaying { get; set; } = false;
+    public int CurrentFrame { get; set; }
+    public float TimeAccumulator { get; set; }
+    public int StartingFrame { get; set; }
+    public int FrameWidth { get; set; }
 
     public FiringAnimation(Sprite sprite, int startingFrame, int maxFrames, float timeBetweenFrames)
     {
@@ -19,30 +19,11 @@ public class FiringAnimation
         TimeBetweenFrames = timeBetweenFrames;
         MaxFrames = maxFrames;
         CurrentFrame = 0;
-        TimeAccumulator = 0;
+        TimeAccumulator = TimeBetweenFrames;
         StartingFrame = startingFrame;
-        _frameWidth = (int)Sprite.TextureRect.Width / MaxFrames;
-        Sprite.TextureRect = new IntRect(StartingFrame * _frameWidth, 0, _frameWidth, Sprite.TextureRect.Height);
-        _random = new Random();
+        FrameWidth = Sprite.TextureRect.Width / MaxFrames;
+        Sprite.TextureRect = new IntRect(100, 0, FrameWidth, Sprite.TextureRect.Height);
     }
 
-    public void Reset()
-    {
-        CurrentFrame = StartingFrame;
-        TimeAccumulator = 0;
-        Sprite.TextureRect = new IntRect(100, 0, _frameWidth, Sprite.TextureRect.Height);
-    }
 
-    public void Update(float deltaTime)
-    {
-        TimeAccumulator += deltaTime;
-
-        if (TimeAccumulator >= TimeBetweenFrames)
-        {
-            TimeAccumulator -= TimeBetweenFrames;
-
-            CurrentFrame = (CurrentFrame + 1) % MaxFrames;
-            Sprite.TextureRect = new IntRect(CurrentFrame * _frameWidth, 0, _frameWidth, Sprite.TextureRect.Height);
-        }
-    }
 }

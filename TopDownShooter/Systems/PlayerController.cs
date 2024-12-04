@@ -1,6 +1,7 @@
 using SFML.System;
 using TopDownShooter.Components;
 using TopDownShooter.Managers;
+using TopDownShooter.Util;
 
 namespace TopDownShooter.Systems;
 
@@ -8,11 +9,14 @@ public class PlayerController : ISystem
 {
     private readonly EntityManager _entityManager;
     private const float MOVESPEED = 500f;
+    private int localPlayer = -1;
 
     public PlayerController(EntityManager entityManager)
     {
         _entityManager = entityManager;
+        localPlayer = _entityManager.GetEntitiesWithComponent<PlayerInput>().FirstOrDefault();
     }
+    
 
     public void Update(float deltaTime)
     {
@@ -25,7 +29,8 @@ public class PlayerController : ISystem
             FiringAnimation firingAnimation = _entityManager.GetComponent<FiringAnimation>(entity);
             Weapon weapon = _entityManager.GetComponent<Weapon>(entity);
 
-            if (playerInput is not null && velocity is not null && transform is not null && walkingAnimation is not null && firingAnimation is not null && weapon is not null)
+            if (playerInput is not null && velocity is not null && transform is not null &&
+                walkingAnimation is not null && firingAnimation is not null && weapon is not null)
             {
                 if (playerInput.MoveLeft)
                 {
@@ -41,7 +46,7 @@ public class PlayerController : ISystem
                 {
                     velocity = new Velocity(new Vector2f(velocity.Value.X, -MOVESPEED));
                 }
-                
+
                 if (playerInput.MoveDown)
                 {
                     velocity = new Velocity(new Vector2f(velocity.Value.X, MOVESPEED));
@@ -55,15 +60,7 @@ public class PlayerController : ISystem
                 {
                     walkingAnimation.Reset();
                 }
-                Console.WriteLine(weapon.IsFiring);
-                if (weapon.IsFiring)
-                {
-                    firingAnimation.Update(deltaTime);
-                }
-                else
-                {
-                    firingAnimation.Reset();
-                }
+
                 transform.Position += velocity.Value * deltaTime;
             }
         }

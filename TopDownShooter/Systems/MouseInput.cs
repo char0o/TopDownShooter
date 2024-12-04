@@ -23,8 +23,21 @@ public class MouseInput : ISystem
             Weapon weapon = _entityManager.GetComponent<Weapon>(entity);
 
             if (_window.HasFocus())
-            {   
-                weapon.IsFiring = Mouse.IsButtonPressed(Mouse.Button.Left);
+            {
+                if (Mouse.IsButtonPressed(Mouse.Button.Left))
+                {
+                    if (!weapon.IsFiring)
+                    {
+                        weapon.IsFiring = true;
+                    }
+                }
+                else
+                {
+                    if (weapon.IsFiring)
+                    {
+                        weapon.IsFiring = false;
+                    }
+                }
             }
         }
     }
