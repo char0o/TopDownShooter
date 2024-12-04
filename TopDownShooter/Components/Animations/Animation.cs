@@ -1,9 +1,11 @@
 using SFML.Graphics;
+using SFML.System;
 
 namespace TopDownShooter.Components;
 
-public class FiringAnimation
+public class Animation
 {
+    public string AnimationName { get; set; } = string.Empty;
     public Sprite Sprite { get; set; }
     public int MaxFrames { get; set; }
     public float TimeBetweenFrames { get; set; }
@@ -12,18 +14,16 @@ public class FiringAnimation
     public float TimeAccumulator { get; set; }
     public int StartingFrame { get; set; }
     public int FrameWidth { get; set; }
+    public Vector2f PositionOffset { get; set; } = new();
 
-    public FiringAnimation(Sprite sprite, int startingFrame, int maxFrames, float timeBetweenFrames)
+    public Animation(string animationName, Sprite sprite, int startingFrame, int maxFrames, float timeBetweenFrames)
     {
+        AnimationName = animationName;
         Sprite = sprite;
         TimeBetweenFrames = timeBetweenFrames;
         MaxFrames = maxFrames;
         CurrentFrame = 0;
         TimeAccumulator = TimeBetweenFrames;
         StartingFrame = startingFrame;
-        FrameWidth = Sprite.TextureRect.Width / MaxFrames;
-        Sprite.TextureRect = new IntRect(100, 0, FrameWidth, Sprite.TextureRect.Height);
     }
-
-
 }

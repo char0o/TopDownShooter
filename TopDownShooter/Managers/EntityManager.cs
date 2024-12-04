@@ -12,6 +12,18 @@ public class EntityManager
         return id;
     }
 
+    public void DestroyEntity(int id)
+    {
+        if (_entities.ContainsKey(id))
+        {
+            _entities.Remove(id);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Entity with id {id} does not exist.");
+        }
+    }
+    
     public void AddComponent<T>(int entityId, T component)
     {
         _entities[entityId][typeof(T)] = component;

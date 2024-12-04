@@ -30,7 +30,7 @@ public class MouseRotation : ISystem
 
             float angle = MathF.Atan2(direction.Y, direction.X);
             float deg = angle * 180f / MathF.PI;
-            playerTransform.Rotation = deg - 90f;
+            playerTransform.Rotation = deg;
         }
     }
 }

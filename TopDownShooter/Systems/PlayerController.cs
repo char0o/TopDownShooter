@@ -22,15 +22,13 @@ public class PlayerController : ISystem
     {
         foreach (int entity in _entityManager.GetEntitiesWithComponent<PlayerInput>())
         {
-            PlayerInput playerInput = _entityManager.GetComponent<PlayerInput>(entity);
-            Velocity velocity = _entityManager.GetComponent<Velocity>(entity);
-            Transform transform = _entityManager.GetComponent<Transform>(entity);
-            WalkingAnimation walkingAnimation = _entityManager.GetComponent<WalkingAnimation>(entity);
-            FiringAnimation firingAnimation = _entityManager.GetComponent<FiringAnimation>(entity);
-            Weapon weapon = _entityManager.GetComponent<Weapon>(entity);
+            PlayerInput? playerInput = _entityManager.GetComponent<PlayerInput>(entity);
+            Velocity? velocity = _entityManager.GetComponent<Velocity>(entity);
+            Transform? transform = _entityManager.GetComponent<Transform>(entity);
+            Animations? animations = _entityManager.GetComponent<Animations>(entity);
+            Weapon? weapon = _entityManager.GetComponent<Weapon>(entity);
 
-            if (playerInput is not null && velocity is not null && transform is not null &&
-                walkingAnimation is not null && firingAnimation is not null && weapon is not null)
+            if (playerInput is not null && velocity is not null && transform is not null && weapon is not null && animations is not null)
             {
                 if (playerInput.MoveLeft)
                 {
@@ -51,15 +49,17 @@ public class PlayerController : ISystem
                 {
                     velocity = new Velocity(new Vector2f(velocity.Value.X, MOVESPEED));
                 }
-
+                
+                Animation? walkingAnimation = animations.GetByName("walking");
                 if (playerInput.IsMoving)
                 {
-                    walkingAnimation.Update(deltaTime);
+                    walkingAnimation.IsPlaying = true;
                 }
                 else
                 {
-                    walkingAnimation.Reset();
+                    walkingAnimation.IsPlaying = false;
                 }
+
 
                 transform.Position += velocity.Value * deltaTime;
             }

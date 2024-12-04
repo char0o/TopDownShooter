@@ -15,21 +15,24 @@ public class AnimationSystem : ISystem
 
     public void Update(float deltaTime)
     {
-        foreach (var entity in _entityManager.GetEntitiesWithComponent<FiringAnimation>())
+        foreach (var entity in _entityManager.GetEntitiesWithComponent<Animations>())
         {
-            FiringAnimation animation = _entityManager.GetComponent<FiringAnimation>(entity);
+            Animations? animations = _entityManager.GetComponent<Animations>(entity);
 
-            if (animation.IsPlaying)
+            if (animations is not null)
             {
-                animation.TimeAccumulator += deltaTime;
-
-                if (animation.TimeAccumulator >= animation.TimeBetweenFrames)
+                foreach (Animation animation in animations.Values)
                 {
-                    animation.TimeAccumulator -= animation.TimeBetweenFrames;
+                    animation.TimeAccumulator += deltaTime;
+
+                    if (animation.TimeAccumulator >= animation.TimeBetweenFrames)
+                    {
+                        animation.TimeAccumulator -= animation.TimeBetweenFrames;
                     
-                    animation.CurrentFrame = (animation.CurrentFrame + 1) % animation.MaxFrames;
+                        animation.CurrentFrame = (animation.CurrentFrame + 1) % animation.MaxFrames;
                     
-                    animation.Sprite.TextureRect = new IntRect(animation.CurrentFrame * animation.FrameWidth, 0, animation.FrameWidth, animation.Sprite.TextureRect.Height);
+                        animation.Sprite.TextureRect = new IntRect(animation.CurrentFrame * animation.FrameWidth, 0, animation.FrameWidth, animation.Sprite.TextureRect.Height);
+                    } 
                 }
             }
         }

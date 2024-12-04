@@ -28,6 +28,7 @@ class Program
         serviceCollection.AddTransient<ISystem, MouseInput>();
         serviceCollection.AddTransient<ISystem, WeaponSystem>();
         serviceCollection.AddTransient<ISystem, AnimationSystem>();
+        serviceCollection.AddTransient<ISystem, HealthSystem>();
         
         serviceCollection.AddSingleton<EntityManager>();
         serviceCollection.AddSingleton<TextureManager>();
