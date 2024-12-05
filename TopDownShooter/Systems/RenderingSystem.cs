@@ -23,15 +23,25 @@ public class RenderingSystem : ISystem
     public void Update(float deltaTime)
     {
         _tileMapManager.Draw();
-        foreach (int entity in _entityManager.GetEntitiesWithComponent<Rendering>())
+        foreach (int entity in _entityManager.GetEntities())
         {
             Rendering? rendering = _entityManager.GetComponent<Rendering>(entity);
             Transform? transform = _entityManager.GetComponent<Transform>(entity);
             Animations? animations = _entityManager.GetComponent<Animations>(entity);
-            WalkingAnimation? walkingAnimation = _entityManager.GetComponent<WalkingAnimation>(entity);
-            FiringAnimation? firingAnimation = _entityManager.GetComponent<FiringAnimation>(entity);
             BoundingBox? boundingBox = _entityManager.GetComponent<BoundingBox>(entity);
+            Bullet? bulletEffect = _entityManager.GetComponent<Bullet>(entity);
+            SquareRendering squareRendering = _entityManager.GetComponent<SquareRendering>(entity);
+            
+            if (bulletEffect is not null && squareRendering is not null && boundingBox is not null)
+            {
 
+                squareRendering.Shape.Position = transform.Position;
+                squareRendering.Shape.Rotation = transform.Rotation;
+                squareRendering.Shape.FillColor = Color.Yellow;
+                boundingBox.Bounds = squareRendering.Shape.GetGlobalBounds();
+                _window.Draw(squareRendering.Shape);
+            }
+            
             if (rendering is not null && transform is not null)
             {
                 rendering.Sprite.Position = transform.Position;// - (transform.Scale * PLAYER_SPRITE_SIZE / 2);
@@ -55,26 +65,6 @@ public class RenderingSystem : ISystem
                     }
                 }
 
-                
-                /*if (walkingAnimation is not null)
-                {
-                    walkingAnimation.Sprite.Position = rendering.Sprite.Position;
-                    walkingAnimation.Sprite.Rotation = rendering.Sprite.Rotation;
-                    walkingAnimation.Sprite.Scale = rendering.Sprite.Scale;
-                    walkingAnimation.Sprite.Origin = new Vector2f(walkingAnimation.Sprite.TextureRect.Width / 2, walkingAnimation.Sprite.TextureRect.Height / 2);
-                    
-                    _window.Draw(walkingAnimation.Sprite);
-                }
-                
-                if (firingAnimation is not null && firingAnimation.IsPlaying)
-                {
-                    firingAnimation.Sprite.Position = rendering.Sprite.Position;
-                    firingAnimation.Sprite.Rotation = rendering.Sprite.Rotation;
-                    firingAnimation.Sprite.Scale = rendering.Sprite.Scale;
-                    firingAnimation.Sprite.Origin = new Vector2f(firingAnimation.Sprite.TextureRect.Width / 2 + 3f, firingAnimation.Sprite.TextureRect.Height / 2 - 29f);
-                    _window.Draw(firingAnimation.Sprite);
-                }*/
-
                 if (boundingBox is not null)
                 {
                     boundingBox.Bounds = new FloatRect(rendering.Sprite.Position - rendering.Sprite.Origin, (Vector2f)rendering.Sprite.TextureRect.Size);
@@ -86,6 +76,8 @@ public class RenderingSystem : ISystem
                     
                     //_window.Draw(shape);
                 }
+
+
                 _window.Draw(rendering.Sprite);
             }
         }

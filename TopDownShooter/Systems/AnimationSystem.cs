@@ -28,11 +28,25 @@ public class AnimationSystem : ISystem
                     if (animation.TimeAccumulator >= animation.TimeBetweenFrames)
                     {
                         animation.TimeAccumulator -= animation.TimeBetweenFrames;
-                    
-                        animation.CurrentFrame = (animation.CurrentFrame + 1) % animation.MaxFrames;
-                    
-                        animation.Sprite.TextureRect = new IntRect(animation.CurrentFrame * animation.FrameWidth, 0, animation.FrameWidth, animation.Sprite.TextureRect.Height);
-                    } 
+                        if (animation.Loop)
+                        {
+                            animation.CurrentFrame = (animation.CurrentFrame + 1) % animation.MaxFrames;
+                        }
+                        else 
+                        {
+                            if (animation.CurrentFrame != animation.MaxFrames - 1)
+                            {
+                                animation.CurrentFrame++;
+                            }
+                            else
+                            {
+                                animation.Finished = true;
+                            }
+                        }
+
+                        animation.Sprite.TextureRect = new IntRect(animation.CurrentFrame * animation.FrameWidth, 0, 
+                            animation.FrameWidth, animation.Sprite.TextureRect.Height);
+                    }
                 }
             }
         }

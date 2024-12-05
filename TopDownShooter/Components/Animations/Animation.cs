@@ -15,6 +15,8 @@ public class Animation
     public int StartingFrame { get; set; }
     public int FrameWidth { get; set; }
     public Vector2f PositionOffset { get; set; } = new();
+    public bool Finished { get; set; } = false;
+    public bool Loop { get; set; } = false;
 
     public Animation(string animationName, Sprite sprite, int startingFrame, int maxFrames, float timeBetweenFrames)
     {

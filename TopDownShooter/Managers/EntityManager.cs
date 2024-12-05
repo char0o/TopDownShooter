@@ -34,6 +34,15 @@ public class EntityManager
         return _entities[entityId].TryGetValue(typeof(T), out var component) ? component as T : null;
     }
 
+    public IEnumerable<int> GetEntities()
+    {
+        return _entities.Keys;
+    }
+
+    public void RemoveComponent<T>(int entityId, T component)
+    {
+        _entities[entityId].Remove(component.GetType());
+    }
     public IEnumerable<int> GetEntitiesWithComponent<T>()
     {
         return _entities.Where(e => e.Value.ContainsKey(typeof(T))).Select(e => e.Key);

@@ -6,4 +6,5 @@ public class Weapon
     public float DelayBetweenShots { get; set; }
     public float TimeAccumulated { get; set; }
     public int Damage { get; set; }
+    public int Owner { get; set; }
 }

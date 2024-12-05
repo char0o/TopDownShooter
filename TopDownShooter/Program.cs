@@ -29,6 +29,8 @@ class Program
         serviceCollection.AddTransient<ISystem, WeaponSystem>();
         serviceCollection.AddTransient<ISystem, AnimationSystem>();
         serviceCollection.AddTransient<ISystem, HealthSystem>();
+        serviceCollection.AddTransient<ISystem, RandomAiSystem>();
+        serviceCollection.AddTransient<ISystem, BulletEffectSystem>();
         
         serviceCollection.AddSingleton<EntityManager>();
         serviceCollection.AddSingleton<TextureManager>();
